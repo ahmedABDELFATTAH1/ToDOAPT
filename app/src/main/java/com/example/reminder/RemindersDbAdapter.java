@@ -58,18 +58,20 @@ public class RemindersDbAdapter {
     }
     //TODO overloaded to take a reminder
     public long createReminder(Reminder reminder) {
-        
+
+        return 0;
     }
 
     //TODO implement the function fetchReminderById() to get a certain reminder given its id
-    public Reminder fetchReminderById(int id) {
-       
+    public  Reminder fetchReminderById(int id) {
+
+        return null;
     }
 
 
     //TODO implement the function fetchAllReminders() which get all reminders
     public Cursor fetchAllReminders() {
-      
+        return null;
     }
 
     //TODO implement the function updateReminder() to update a certain reminder
