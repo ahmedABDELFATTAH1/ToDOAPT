@@ -4,6 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+
+import androidx.core.content.ContextCompat;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
@@ -30,20 +35,45 @@ public class RemindersSimpleCursorAdapter extends SimpleCursorAdapter {
         if (holder == null) {
             holder = new ViewHolder();
             holder.colImp = cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_IMPORTANT);
-            holder.listTab = view.findViewById(R.id.row_tab);
+            holder.colContent = cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_CONTENT);
+            holder.colID = cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_ID);
+
+            holder.listTab = view.findViewById(R.id.reminder_item_isImportant);
+            holder.content = view.findViewById(R.id.reminder_item_text);
+            holder.id = view.findViewById(R.id.reminder_item_id);
             view.setTag(holder);
         }
         if (cursor.getInt(holder.colImp) > 0) {
-            holder.listTab.setBackgroundColor(ContextCompat.getColor(context,R.color.orange));
+            holder.listTab.setBackgroundColor(ContextCompat.getColor(context,R.color.colorOrange));
         } else {
-            holder.listTab.setBackgroundColor(ContextCompat.getColor(context,R.color.green));
+            holder.listTab.setBackgroundColor(ContextCompat.getColor(context,R.color.colorGreen));
         }
+
+        holder.id.setText(String.valueOf(cursor.getInt(holder.colID)));
+        //if it didnt work use this
+        //holder.id.setText(cursor.getString(holder.colID));
+
+        holder.content.setText(cursor.getString(holder.colContent));
+
     }
+
+
     static class ViewHolder {
         //store the column index
+        int colID;
         int colImp;
+        int colContent;
+
+
         //store the view
         View listTab;
+
+        //store the text
+        TextView content;
+
+        //store the id
+        TextView id;
+
     }
 
 }

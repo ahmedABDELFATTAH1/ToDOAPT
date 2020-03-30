@@ -7,4 +7,8 @@
     <color name="primaryText">#212121</color>
     <color name="background">#e1e1e1</color>
     <color name="middlegrey">#bababa</color>
+    <color name="colorOrange">#FF4500</color>#C6FBC0
+    <color name="colorBlack">#000000</color>
+    <color name="colorGreen">#85F678</color>
+
 </resources>

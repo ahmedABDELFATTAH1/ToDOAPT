@@ -7,7 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
+import android.widget.Toast;
 
 
 public class RemindersDbAdapter {
@@ -53,22 +53,36 @@ public class RemindersDbAdapter {
 
     //TODO implement the function createReminder() which take the name as the content of the reminder and boolean important...note that the id will be created for you automatically
     public void createReminder(String name, boolean important) {
-      
+        open();
+        ContentValues contentval = new ContentValues();
+        contentval.put(COL_CONTENT,name);
+        contentval.put(COL_IMPORTANT,important);
+        Long success= mDb.insert(TABLE_NAME,null,contentval);
+        close();
+        if(success==-1)
+        {
+            System.out.println("BAAAAAD!!");
+        }
     }
     //TODO overloaded to take a reminder
     public long createReminder(Reminder reminder) {
-        
+
+        return 0;
     }
 
     //TODO implement the function fetchReminderById() to get a certain reminder given its id
-    public Reminder fetchReminderById(int id) {
-       
+    public  Reminder fetchReminderById(int id) {
+
+        return null;
     }
 
 
     //TODO implement the function fetchAllReminders() which get all reminders
     public Cursor fetchAllReminders() {
-      
+        open();
+        String query="Select * from "+TABLE_NAME;
+        Cursor cu= mDb.rawQuery(query, null);
+        return cu;
     }
 
     //TODO implement the function updateReminder() to update a certain reminder
