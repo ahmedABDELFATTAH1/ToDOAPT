@@ -23,6 +23,18 @@ public class RemindersSimpleCursorAdapter extends SimpleCursorAdapter {
             from, int[] to, int flags) {
         super(context, layout, c, from, to, flags);
     }
+
+    @Override
+    public Object getItem(int position) {
+        Cursor cursor = getCursor();
+        cursor.moveToPosition(position);
+        int id = cursor.getInt(cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_ID));
+        String content = cursor.getString(cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_CONTENT));
+        int imp = cursor.getInt(cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_IMPORTANT));
+        Reminder reminder = new Reminder(id,content,imp);
+        return reminder;
+    }
+
     //to use a viewholder, you must override the following two methods and define a ViewHolder class
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {

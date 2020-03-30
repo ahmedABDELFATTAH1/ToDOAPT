@@ -92,10 +92,10 @@ public class RemindersActivity extends AppCompatActivity implements ListUpdater 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         AdapterView.AdapterContextMenuInfo info  = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        //Reminder reminder = (Reminder)listAdapter.getItem(info.position);
+        Reminder reminder = (Reminder)listAdapter.getItem(info.position);
         switch(item.getItemId()) {
             case R.id.reminder_click_options_menu_edit_reminder:
-                DialogReminder dialogReminder=new DialogReminder("EDIT",-1,this);
+                DialogReminder dialogReminder = new DialogReminder("EDIT",-1,this);
                 dialogReminder.show(getSupportFragmentManager(),null);
                 Toast.makeText(this, "implement editt reminder", Toast.LENGTH_SHORT).show();
                 return true;
