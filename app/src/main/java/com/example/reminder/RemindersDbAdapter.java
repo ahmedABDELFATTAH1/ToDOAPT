@@ -11,7 +11,6 @@ import android.util.Log;
 
 
 public class RemindersDbAdapter {
-
     //these are the column names
     public static final String COL_ID = "_id";
     public static final String COL_CONTENT = "content";
