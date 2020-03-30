@@ -81,15 +81,16 @@ public class RemindersDbAdapter {
 
     //TODO implement the function fetchReminderById() to get a certain reminder given its id
     public  Reminder fetchReminderById(int id) {
+        System.out.println(String.valueOf(id));
+        open();
         //Select * from Materials where Title=title AND Course_Code = CourseCode
-        String query = "select * from " + TABLE_NAME
-                + " where " + COL_ID + " = " + String.valueOf(id);
-        Cursor reminderCursor= mDb.rawQuery(query, null);
+        String query="Select * from "+TABLE_NAME +" where "+COL_ID +" = ? ";
+        Cursor reminderCursor= mDb.rawQuery(query,  new String[] {String.valueOf(id)});
+        reminderCursor.moveToFirst();
         String content=reminderCursor.getString(reminderCursor.getColumnIndex(COL_CONTENT));
         int important=reminderCursor.getInt(reminderCursor.getColumnIndex(COL_IMPORTANT));
         Reminder reminder=new Reminder(id,content,important);
-        mDb.close();
-        return null;
+        return reminder;
     }
 
 
