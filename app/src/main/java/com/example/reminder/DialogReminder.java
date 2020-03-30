@@ -2,7 +2,6 @@ package com.example.reminder;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +21,12 @@ public class DialogReminder extends AppCompatDialogFragment {
     private RemindersDbAdapter reminderAdapter;
     private String typeOperation;
     private int reminderId;
-    public DialogReminder(String type,Integer id)
+    private ListUpdater listUpdater;
+    public DialogReminder(String type, Integer id, ListUpdater listUpdater)
     {
         typeOperation=type;
         reminderId=id;
+        this.listUpdater = listUpdater;
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class DialogReminder extends AppCompatDialogFragment {
 
         bulider.setView(view);
         bulider.setTitle(typeOperation);
+
 
 
         simpleSwitch = (Switch) view.findViewById(R.id.switch_dialog);
@@ -59,6 +61,8 @@ public class DialogReminder extends AppCompatDialogFragment {
                 reminderAdapter.createReminder(text,switchState);
                 Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
                 getDialog().cancel();
+                listUpdater.updateList();
+
             }
         });
         return bulider.create();

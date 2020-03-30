@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class RemindersActivity extends AppCompatActivity {
+public class RemindersActivity extends AppCompatActivity implements ListUpdater {
 
     private RemindersDbAdapter              dbAdapter;
     private ListView                        remindersList;
@@ -47,6 +47,12 @@ public class RemindersActivity extends AppCompatActivity {
     }
 
     @Override
+    public void updateList() {
+        listAdapter.changeCursor(dbAdapter.fetchAllReminders());
+        remindersList.setAdapter(listAdapter);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.reminder_dialog_box,menu);
@@ -60,6 +66,7 @@ public class RemindersActivity extends AppCompatActivity {
                 //new reminder
                 Toast.makeText(this, "implement new reminder", Toast.LENGTH_SHORT).show();
                 openDialog();
+
                 return true;
             case R.id.reminder_click_options_menu_exit:
                 this.finish();
@@ -70,9 +77,9 @@ public class RemindersActivity extends AppCompatActivity {
     }
     public void openDialog()
     {
-        DialogReminder dialogReminder=new DialogReminder("CREATE",-1);
+        DialogReminder dialogReminder=new DialogReminder("CREATE",-1,this);
         dialogReminder.show(getSupportFragmentManager(),"Create Reminder");
-        listAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -88,7 +95,7 @@ public class RemindersActivity extends AppCompatActivity {
         //Reminder reminder = (Reminder)listAdapter.getItem(info.position);
         switch(item.getItemId()) {
             case R.id.reminder_click_options_menu_edit_reminder:
-                DialogReminder dialogReminder=new DialogReminder("EDIT",-1);
+                DialogReminder dialogReminder=new DialogReminder("EDIT",-1,this);
                 dialogReminder.show(getSupportFragmentManager(),null);
                 Toast.makeText(this, "implement editt reminder", Toast.LENGTH_SHORT).show();
                 return true;

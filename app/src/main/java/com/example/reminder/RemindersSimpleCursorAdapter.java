@@ -49,6 +49,7 @@ public class RemindersSimpleCursorAdapter extends SimpleCursorAdapter {
             holder.listTab.setBackgroundColor(ContextCompat.getColor(context,R.color.colorGreen));
         }
 
+        holder.listTab.setText("");
         holder.id.setText(String.valueOf(cursor.getInt(holder.colID)));
         //if it didnt work use this
         //holder.id.setText(cursor.getString(holder.colID));
@@ -66,7 +67,7 @@ public class RemindersSimpleCursorAdapter extends SimpleCursorAdapter {
 
 
         //store the view
-        View listTab;
+        TextView listTab;
 
         //store the text
         TextView content;
