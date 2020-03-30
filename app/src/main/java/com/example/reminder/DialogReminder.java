@@ -42,11 +42,23 @@ public class DialogReminder extends AppCompatDialogFragment {
         myText=view.findViewById(R.id.edittext_dialog);
         myButtonCancel=view.findViewById(R.id.cancel_dialog);
         myButtonCreate=view.findViewById(R.id.button_action_dialog);
+        if(typeOperation=="Create Reminder")
+        {
+            myButtonCreate.setText("CREATE");
+        }
+        else{
+            myButtonCreate.setText("EDIT");
+            Reminder reminder=reminderAdapter.fetchReminderById(reminderId);
+            myText.setText(reminder.getContent());
+            simpleSwitch.setChecked(reminder.getImportant()!=0);
+
+        }
+
         reminderAdapter=new RemindersDbAdapter(getContext());
         myButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                Toast.makeText(getContext(), "NOOOOOOOO", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "NOO", Toast.LENGTH_SHORT).show();
                 getDialog().cancel();
             }
         });
@@ -54,11 +66,19 @@ public class DialogReminder extends AppCompatDialogFragment {
         myButtonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                switchState = simpleSwitch.isChecked();
-                String text=myText.getText().toString();
-                reminderAdapter.createReminder(text,switchState);
-                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-                getDialog().cancel();
+                if(typeOperation=="Create Reminder") {
+                    switchState = simpleSwitch.isChecked();
+                    String text = myText.getText().toString();
+                    reminderAdapter.createReminder(text, switchState);
+                    Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+                    getDialog().cancel();
+                }
+                else
+                {
+                    String text = myText.getText().toString();
+                    Reminder reminder=new Reminder(reminderId,text,simpleSwitch.isChecked()?1:0);
+                    reminderAdapter.updateReminder(reminder);
+                }
             }
         });
         return bulider.create();

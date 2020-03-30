@@ -66,13 +66,29 @@ public class RemindersDbAdapter {
     }
     //TODO overloaded to take a reminder
     public long createReminder(Reminder reminder) {
-
+        open();
+        ContentValues contentval = new ContentValues();
+        contentval.put(COL_CONTENT,reminder.getContent());
+        contentval.put(COL_IMPORTANT,reminder.getImportant());
+        Long success= mDb.insert(TABLE_NAME,null,contentval);
+        if(success==-1)
+        {
+            System.out.println("BAAAAAD!!");
+        }
+        close();
         return 0;
     }
 
     //TODO implement the function fetchReminderById() to get a certain reminder given its id
     public  Reminder fetchReminderById(int id) {
-
+        //Select * from Materials where Title=title AND Course_Code = CourseCode
+        String query = "select * from " + TABLE_NAME
+                + " where " + COL_ID + " = " + String.valueOf(id);
+        Cursor reminderCursor= mDb.rawQuery(query, null);
+        String content=reminderCursor.getString(reminderCursor.getColumnIndex(COL_CONTENT));
+        int important=reminderCursor.getInt(reminderCursor.getColumnIndex(COL_IMPORTANT));
+        Reminder reminder=new Reminder(id,content,important);
+        mDb.close();
         return null;
     }
 
@@ -87,16 +103,26 @@ public class RemindersDbAdapter {
 
     //TODO implement the function updateReminder() to update a certain reminder
     public void updateReminder(Reminder reminder) {
-       
+        open();
+        ContentValues contentval = new ContentValues();
+        contentval.put(COL_CONTENT,reminder.getContent());
+        contentval.put(COL_IMPORTANT,reminder.getImportant());
+        String whereclause = COL_ID+ " =?";
+        String[] arguments = {String.valueOf(reminder.getId())};
+        int NumberOfRowAffected= mDb.update(TABLE_NAME, contentval, whereclause, arguments);
     }
     //TODO implement the function deleteReminderById() to delete a certain reminder given its id
     public void deleteReminderById(int nId) {
-    
+        open();
+        String whereclause = COL_ID+ " =?";
+        String[] arguments = {String.valueOf(nId)};
+        mDb.delete(TABLE_NAME,whereclause,arguments);
     }
 
     //TODO implement the function deleteAllReminders() to delete all reminders
     public void deleteAllReminders() {
-       
+        open();
+        mDb.delete(TABLE_NAME,null,null);
     }
 
 

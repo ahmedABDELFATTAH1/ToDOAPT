@@ -72,7 +72,7 @@ public class RemindersActivity extends AppCompatActivity {
     {
         DialogReminder dialogReminder=new DialogReminder("CREATE",-1);
         dialogReminder.show(getSupportFragmentManager(),"Create Reminder");
-        listAdapter.notifyDataSetChanged();
+        listAdapter.changeCursor(dbAdapter.fetchAllReminders());
     }
 
     @Override
@@ -88,12 +88,13 @@ public class RemindersActivity extends AppCompatActivity {
         //Reminder reminder = (Reminder)listAdapter.getItem(info.position);
         switch(item.getItemId()) {
             case R.id.reminder_click_options_menu_edit_reminder:
-                DialogReminder dialogReminder=new DialogReminder("EDIT",-1);
+                DialogReminder dialogReminder=new DialogReminder("EDIT Reminder",-1);
                 dialogReminder.show(getSupportFragmentManager(),null);
-                Toast.makeText(this, "implement editt reminder", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "implement edit reminder", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.reminder_click_options_menu_delete_reminder:
                 Toast.makeText(this, "implement delete reminder", Toast.LENGTH_SHORT).show();
+                dbAdapter.deleteReminderById(-1);
                 return true;
         }
 
