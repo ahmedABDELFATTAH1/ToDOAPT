@@ -2,7 +2,6 @@ package com.example.reminder;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +21,14 @@ public class DialogReminder extends AppCompatDialogFragment {
     private RemindersDbAdapter reminderAdapter;
     private String typeOperation;
     private int reminderId;
+
     private RemindersSimpleCursorAdapter listAdapter;
     public DialogReminder(String type,Integer id,RemindersSimpleCursorAdapter listAdapter)
     {
         typeOperation=type;
         reminderId=id;
         this.listAdapter=listAdapter;
+
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class DialogReminder extends AppCompatDialogFragment {
         bulider.setView(view);
         bulider.setTitle(typeOperation);
         reminderAdapter=new RemindersDbAdapter(getContext());
+
 
         simpleSwitch = (Switch) view.findViewById(R.id.switch_dialog);
 
@@ -54,6 +56,7 @@ public class DialogReminder extends AppCompatDialogFragment {
             Reminder reminder=reminderAdapter.fetchReminderById(reminderId);
             myText.setText(reminder.getContent());
             simpleSwitch.setChecked(reminder.getImportant()!=0);
+            listAdapter.changeCursor(reminderAdapter.fetchAllReminders());
 
         }
 
@@ -69,6 +72,7 @@ public class DialogReminder extends AppCompatDialogFragment {
         myButtonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+
                 if(typeOperation.equals("Create Reminder")) {
                     switchState = simpleSwitch.isChecked();
                     String text = myText.getText().toString();
@@ -81,8 +85,10 @@ public class DialogReminder extends AppCompatDialogFragment {
                     String text = myText.getText().toString();
                     Reminder reminder=new Reminder(reminderId,text,simpleSwitch.isChecked()?1:0);
                     reminderAdapter.updateReminder(reminder);
+                    getDialog().cancel();
                 }
                 listAdapter.changeCursor(reminderAdapter.fetchAllReminders());
+
             }
         });
         return bulider.create();

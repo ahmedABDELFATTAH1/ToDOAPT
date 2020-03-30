@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class RemindersActivity extends AppCompatActivity {
+public class RemindersActivity extends AppCompatActivity  {
 
     private RemindersDbAdapter              dbAdapter;
     private ListView                        remindersList;
@@ -46,6 +46,7 @@ public class RemindersActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -60,6 +61,7 @@ public class RemindersActivity extends AppCompatActivity {
                 //new reminder
                 Toast.makeText(this, "implement new reminder", Toast.LENGTH_SHORT).show();
                 openDialog();
+
                 return true;
             case R.id.reminder_click_options_menu_exit:
                 this.finish();
@@ -70,9 +72,9 @@ public class RemindersActivity extends AppCompatActivity {
     }
     public void openDialog()
     {
+
         DialogReminder dialogReminder=new DialogReminder("Create Reminder",-1,listAdapter);
         dialogReminder.show(getSupportFragmentManager(),null);
-
     }
 
     @Override
@@ -85,16 +87,17 @@ public class RemindersActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         AdapterView.AdapterContextMenuInfo info  = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        //Reminder reminder = (Reminder)listAdapter.getItem(info.position);
+        Reminder reminder = (Reminder)listAdapter.getItem(info.position);
         switch(item.getItemId()) {
             case R.id.reminder_click_options_menu_edit_reminder:
-                DialogReminder dialogReminder=new DialogReminder("EDIT Reminder",1,listAdapter);
+                DialogReminder dialogReminder=new DialogReminder("EDIT Reminder",reminder.getId(),listAdapter);
                 dialogReminder.show(getSupportFragmentManager(),null);
                 Toast.makeText(this, "implement edit reminder", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.reminder_click_options_menu_delete_reminder:
                 Toast.makeText(this, "implement delete reminder", Toast.LENGTH_SHORT).show();
-                dbAdapter.deleteReminderById(1);
+                dbAdapter.deleteReminderById(reminder.getId());
+                listAdapter.changeCursor(dbAdapter.fetchAllReminders());
                 return true;
         }
 
