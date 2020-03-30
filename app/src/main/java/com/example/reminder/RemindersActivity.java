@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class RemindersActivity extends AppCompatActivity implements ListUpdater {
+public class RemindersActivity extends AppCompatActivity  {
 
     private RemindersDbAdapter              dbAdapter;
     private ListView                        remindersList;
@@ -46,11 +46,6 @@ public class RemindersActivity extends AppCompatActivity implements ListUpdater 
 
     }
 
-    @Override
-    public void updateList() {
-        listAdapter.changeCursor(dbAdapter.fetchAllReminders());
-        remindersList.setAdapter(listAdapter);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -77,7 +72,7 @@ public class RemindersActivity extends AppCompatActivity implements ListUpdater 
     }
     public void openDialog()
     {
-        DialogReminder dialogReminder=new DialogReminder("CREATE",-1,this);
+        DialogReminder dialogReminder=new DialogReminder("CREATE",-1);
         dialogReminder.show(getSupportFragmentManager(),"Create Reminder");
 
     }
@@ -95,7 +90,7 @@ public class RemindersActivity extends AppCompatActivity implements ListUpdater 
         Reminder reminder = (Reminder)listAdapter.getItem(info.position);
         switch(item.getItemId()) {
             case R.id.reminder_click_options_menu_edit_reminder:
-                DialogReminder dialogReminder = new DialogReminder("EDIT",-1,this);
+                DialogReminder dialogReminder = new DialogReminder("EDIT",-1);
                 dialogReminder.show(getSupportFragmentManager(),null);
                 Toast.makeText(this, "implement editt reminder", Toast.LENGTH_SHORT).show();
                 return true;

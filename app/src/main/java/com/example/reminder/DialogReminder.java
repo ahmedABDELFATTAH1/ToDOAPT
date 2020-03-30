@@ -21,12 +21,11 @@ public class DialogReminder extends AppCompatDialogFragment {
     private RemindersDbAdapter reminderAdapter;
     private String typeOperation;
     private int reminderId;
-    private ListUpdater listUpdater;
-    public DialogReminder(String type, Integer id, ListUpdater listUpdater)
+    public DialogReminder(String type, Integer id)
     {
         typeOperation=type;
         reminderId=id;
-        this.listUpdater = listUpdater;
+
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -61,7 +60,6 @@ public class DialogReminder extends AppCompatDialogFragment {
                 reminderAdapter.createReminder(text,switchState);
                 Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
                 getDialog().cancel();
-                listUpdater.updateList();
 
             }
         });
